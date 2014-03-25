@@ -895,15 +895,8 @@ void QtGlSliceView::setOrientation(int newOrientation)
     cWinOrder[0] = cWinOrder[1];
     cWinOrder[1] = t;
     }
-
-  if(clickedPointsStored() == 0)
-    {
-    setSliceNum(cWinCenter[cWinOrder[2]]);
-    }
-  else
-    {
-    setSliceNum((int)cClickSelect[cWinOrder[2]]);
-    }
+  const int newSliceNum = clickedPointsStored() ?(int)cClickSelect[cWinOrder[2]] : cWinCenter[cWinOrder[2]];
+  setSliceNum(newSliceNum);
 
   if(cWinOrientationCallBack != NULL)
     cWinOrientationCallBack();
@@ -1418,7 +1411,6 @@ void QtGlSliceView::paintGL(void)
   QFont font("Times", h);
   if(!cImData)
   {
-    std::cout << "no cImData !!!" << std::endl;
     return;
   }
 
@@ -1852,7 +1844,11 @@ int QtGlSliceView::sliceNum() const
 }
 
 void QtGlSliceView::selectPoint(double newX, double newY, double newZ)
-  {    
+  {
+  if(!cImData)
+    {
+    return;
+    }
   cClickSelect[0] = newX;
   if(cClickSelect[0]<0)
     cClickSelect[0] = 0;
