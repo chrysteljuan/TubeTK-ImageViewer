@@ -27,7 +27,8 @@ limitations under the License.
 QtSliceControlsWidget::QtSliceControlsWidget(QWidget* parent)
   : QWidget(parent)
 {
-  this->UI = new Ui::Form;
+  this->SliceView = 0;
+  this->UI = new Ui::Controls;
   UI->setupUi(this);
 }
 
@@ -74,8 +75,8 @@ void QtSliceControlsWidget::setInputImage()
                    SLOT(setValue(int)));
   QObject::connect(this->SliceView, SIGNAL(minIntensityChanged(int)), UI->IntensityMin,
                    SLOT(setValue(int)));
-  QObject::connect(this->SliceView, SIGNAL(updateDetails(QString)), UI->Details,
-                   SLOT(setText(QString)));
+  QObject::connect(this->SliceView, SIGNAL(updateDetails(QString)), this,
+                   SLOT(setTextEdit(QString)));
 
   UI->IntensityMin->setMinimum( static_cast<int>
                                   ( this->SliceView->minIntensity() ));
@@ -99,3 +100,10 @@ void QtSliceControlsWidget::setSliceView(QtGlSliceView* sliceView)
   this->SliceView = sliceView;
 }
 
+void QtSliceControlsWidget::setTextEdit(QString s)
+{
+  bool visible;
+  s.compare("") == 0 ? visible = false : visible  = true;
+  this->UI->Details->setVisible(visible);
+  this->UI->Details->setText(s);
+}

@@ -25,8 +25,8 @@ limitations under the License.
 #define __QtSliceControlsWidget_h
 
 //Qt includes
+#include <QDebug>
 #include <QWidget>
-#include <QGridLayout>
 
 //QtImageViewer includes
 #include "QtGlSliceView.h"
@@ -41,12 +41,13 @@ public:
   ~QtSliceControlsWidget();
   void setInputImage();
 public slots:
+  void setTextEdit(QString s);
   void setDisplayIMax(int value);
   void setDisplayIMin(int value);
   void setDisplayPosition(int x, int y, int z, double value);
   void setSliceView(QtGlSliceView *sliceView);
 private:
-  Ui::Form *UI;
+  Ui::Controls *UI;
   QtGlSliceView *SliceView;
 
 };
