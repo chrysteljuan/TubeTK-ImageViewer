@@ -140,6 +140,10 @@ QtGlSliceView::QtGlSliceView(QWidget *parent)
   cWinZBuffer = NULL;
   cfastMovVal = 1; //fast moving pace: 1 by defaut
   cfastMovThresh = 10; //how many single step moves before fast moving
+
+  QSizePolicy sP = this->sizePolicy();
+  sP.setHeightForWidth(true);
+  this->setSizePolicy(sP);
   update();
 }
 
@@ -1363,14 +1367,23 @@ void QtGlSliceView::resizeEvent(QResizeEvent* event)
 {
   cW = event->size().width();
   cH = event->size().height();
+  Superclass::resizeEvent(event);
 }
-
 
 void QtGlSliceView::size(int w, int h)
 {
   update();
 }
 
+bool QtGlSliceView::hasHeightForWidth() const
+{
+  return true;
+}
+
+int QtGlSliceView::heightForWidth(int width) const
+{
+  return width;
+}
 
 /** Set up the OpenGL view port, matrix mode, etc. */
 void QtGlSliceView::resizeGL(int w, int h)

@@ -103,8 +103,8 @@ struct ClickPoint
   **/
 //  
 
-class QtGlSliceView :
-    public QGLWidget
+class QtGlSliceView
+  : public QGLWidget
 {
   Q_OBJECT
 
@@ -132,7 +132,7 @@ class QtGlSliceView :
   Q_PROPERTY(int fastMovThresh READ fastMovThresh WRITE setFastMovThresh);
   Q_PROPERTY(bool validOverlayData READ validOverlayData WRITE setValidOverlayData NOTIFY validOverlayDataChanged);
 public:
-  
+  typedef QGLWidget                        Superclass;
   typedef double                           ImagePixelType;
   typedef unsigned char                    OverlayPixelType;
   typedef itk::Image<ImagePixelType,3>     ImageType;
@@ -166,19 +166,13 @@ public:
   ColorTableType *colorTable(void) const;
 
   virtual void size(int w, int h);
+  virtual bool hasHeightForWidth()const;
+  virtual int heightForWidth(int width)const;
 
   virtual void update();
 
   /*! What slice is being viewed */
   int sliceNum(void) const;
-
-  virtual void mousePressEvent(QMouseEvent *event);
-
-  virtual void mouseMoveEvent(QMouseEvent *event) ;
-
-  virtual void keyPressEvent(QKeyEvent* event);
-
-  virtual void resizeEvent(QResizeEvent *event);
   
   double minIntensity() const;
   double maxIntensity() const;
@@ -363,6 +357,11 @@ signals:
   void validOverlayDataChanged(bool valid);
 
 protected:
+
+  virtual void mousePressEvent(QMouseEvent *event);
+  virtual void mouseMoveEvent(QMouseEvent *event) ;
+  virtual void keyPressEvent(QKeyEvent* event);
+  virtual void resizeEvent(QResizeEvent *event);
 
   void initializeGL();
   void resizeGL(int w, int h);
